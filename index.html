@@ -1,0 +1,613 @@
+
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#08111f">
+<title>GAZFOOL Digital Ecosystem</title>
+
+<style>
+:root{
+--bg:#07111f;--panel:#101d30;--panel2:#14243a;
+--gold:#e8bd62;--gold2:#f6dc9c;--muted:#91a0b5;
+--line:#26364d;--white:#f4f6fa;--green:#55d6a1;
+--red:#ff8585
+}
+*{box-sizing:border-box}
+body{
+margin:0;
+background:radial-gradient(ellipse at 75% -10%,#1a2b43 0,transparent 42%),var(--bg);
+color:var(--white);
+font:15px/1.5 Inter,system-ui,-apple-system,Segoe UI,sans-serif
+}
+button,input{font:inherit}
+.app{max-width:1180px;margin:auto;padding:18px 18px 100px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 0 22px}
+.brand{display:flex;align-items:center;gap:11px}
+.logo{
+width:43px;height:43px;border-radius:14px;
+object-fit:contain;background:#fff;padding:2px;
+box-shadow:0 7px 24px #d9a94a33
+}
+.brand strong{letter-spacing:1.5px;font-size:14px}
+.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:2px}
+.status{font-size:11px;color:var(--green);border:1px solid #275c4b;padding:6px 10px;border-radius:99px}
+.hero{
+border:1px solid #5d4b2b;
+background:linear-gradient(115deg,#17263a 0%,#101b2b 55%,#332719 150%);
+border-radius:24px;padding:26px;position:relative;overflow:hidden
+}
+.hero:after{
+content:'G';position:absolute;right:25px;top:-55px;
+font-size:260px;font-weight:900;color:#e8bd6209;pointer-events:none
+}
+.eyebrow{color:var(--gold);font-size:11px;letter-spacing:2px;font-weight:700}
+.hero h1{font-size:clamp(27px,5vw,44px);line-height:1.08;margin:12px 0;max-width:650px}
+.hero p{color:#b4c0d0;max-width:600px;margin:0 0 20px}
+.btn{border:0;border-radius:12px;padding:11px 16px;font-weight:700;cursor:pointer;transition:.18s}
+.btn:active{transform:scale(.98)}
+.primary{background:linear-gradient(135deg,var(--gold2),#c48a35);color:#17130b}
+.secondary{background:#1b2b40;color:var(--white);border:1px solid var(--line)}
+.ghost{background:transparent;color:var(--gold2);border:1px solid #8a6a35}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0 24px}
+.stat,.card{background:linear-gradient(150deg,#122137,#0d1929);border:1px solid var(--line);border-radius:18px;padding:17px}
+.stat small,.muted{color:var(--muted)}
+.stat strong{display:block;font-size:22px;margin-top:5px}
+.section-head{display:flex;justify-content:space-between;align-items:end;gap:12px;margin:24px 0 12px}
+.section-head h2{margin:0;font-size:20px}
+.section-head p{margin:3px 0 0;color:var(--muted);font-size:12px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.card h3{margin:0 0 6px;font-size:16px}
+.card p{color:var(--muted);font-size:13px;margin:0 0 14px}
+.big-number{font-size:29px;font-weight:800;color:var(--gold2)}
+.pill{font-size:10px;border:1px solid #66522f;color:var(--gold2);padding:4px 8px;border-radius:30px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.progress{height:8px;background:#25354a;border-radius:20px;overflow:hidden;margin:10px 0}
+.progress span{display:block;height:100%;background:linear-gradient(90deg,#b9822f,#f6dc9c);border-radius:20px}
+.nav{
+position:fixed;z-index:10;bottom:0;left:0;right:0;
+background:#081321ed;backdrop-filter:blur(16px);
+border-top:1px solid var(--line);display:flex;justify-content:center;
+padding:9px 8px calc(9px + env(safe-area-inset-bottom));gap:4px
+}
+.nav button{
+background:transparent;color:#8291a7;border:0;border-radius:12px;
+padding:8px 14px;min-width:62px;cursor:pointer;font-size:11px
+}
+.nav button span{display:block;font-size:19px;margin-bottom:2px}
+.nav button.active{background:#26364a;color:var(--gold2)}
+.page{display:none}
+.page.active{display:block}
+.notice{
+font-size:11px;color:#b7a27b;background:#241f16;
+border:1px solid #5c4828;padding:10px 12px;border-radius:12px;margin-top:12px
+}
+.levels{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.level{background:#0b1727;border:1px solid var(--line);padding:12px;border-radius:13px}
+.level b{display:block;font-size:21px;color:var(--gold2)}
+.level small{color:var(--muted)}
+.refcode{
+font:700 17px ui-monospace,monospace;letter-spacing:2px;
+color:var(--gold2);background:#0a1422;padding:13px;
+border:1px dashed #806536;border-radius:12px;text-align:center
+}
+.field{display:grid;gap:6px;margin:10px 0}
+.field label{font-size:12px;color:#b4c0d0}
+.field input{
+width:100%;background:#091523;color:white;border:1px solid var(--line);
+padding:12px;border-radius:11px;outline:none
+}
+.field input:focus{border-color:var(--gold)}
+.actions{display:flex;gap:9px;flex-wrap:wrap}
+.hidden{display:none!important}
+.toast{
+position:fixed;top:15px;left:50%;transform:translateX(-50%);
+background:#20334a;border:1px solid #53647a;color:white;
+padding:10px 15px;border-radius:12px;z-index:20;
+box-shadow:0 8px 30px #0007;font-size:13px
+}
+.member{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line);font-size:13px}
+.member:last-child{border:0}
+.footer{text-align:center;color:#65758c;font-size:11px;margin:25px 0 0}
+@media(max-width:650px){
+.app{padding:12px 13px 95px}
+.hero{padding:21px}
+.stats{gap:8px}
+.stat{padding:12px}
+.stat strong{font-size:17px}
+.grid{grid-template-columns:1fr}
+.nav button{padding:7px 9px;min-width:0;flex:1}
+.nav button span{font-size:18px}
+.levels{gap:6px}
+.level{padding:9px 7px}
+.level b{font-size:18px}
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<header class="top">
+<div class="brand">
+<img class="logo"
+src="https://i.ibb.co.com/Y4sr0YQf/1794065389919.png"
+alt="Logo GAZFOOL">
+<div>
+<strong>GAZFOOL</strong>
+<small>DIGITAL ECOSYSTEM</small>
+</div>
+</div>
+<div class="status">● On Chain</div>
+</header>
+
+<main>
+
+<!-- HOME -->
+<section id="home" class="page active">
+<div class="hero">
+<div class="eyebrow">ONE ECOSYSTEM MANY OPPORTUNITIES.</div>
+<h1>Build your future in the <span style="color:var(--gold2)">GAZFOOL</span> ecosystem.</h1>
+<p>Ekosistem digital multi-utility yang dikembangkan bertahap untuk komunitas, game, UMKM, layanan digital, dan kolaborasi.</p>
+<div class="actions">
+<button class="btn primary" onclick="go('account')">Mulai Bergabung ↗</button>
+<button class="btn ghost" onclick="go('community')">Jelajahi Komunitas</button>
+</div>
+</div>
+
+<div class="stats">
+<div class="stat"><small>Total suplai</small><strong>1.000.000 $GAZ</strong></div>
+<div class="stat"><small>Blockchain</small><strong>Sidra Chain</strong></div>
+<div class="stat"><small>Model</small><strong>Multi-utility</strong></div>
+</div>
+
+<div class="section-head">
+<div><h2>Jelajahi ekosistem</h2><p>Lima bagian utama GAZFOOL</p></div>
+</div>
+
+<div class="grid">
+<div class="card">
+<div class="row"><h3>⛏ Mining</h3><span class="pill">SIMULASI</span></div>
+<p>Mulai sesi dan lihat perkembangan reward virtual.</p>
+<button class="btn secondary" onclick="go('mining')">Buka Mining</button>
+</div>
+<div class="card">
+<div class="row"><h3>♧ Community</h3><span class="pill">3 LEVEL</span></div>
+<p>Komunitas, referral, game, UMKM, dan layanan digital.</p>
+<button class="btn secondary" onclick="go('community')">Buka Community</button>
+</div>
+</div>
+</section>
+
+<!-- MINING -->
+<section id="mining" class="page">
+<div class="section-head">
+<div>
+<div class="eyebrow">VIRTUAL MINING</div>
+<h2>Mining Dashboard</h2>
+<p>Simulasi aktivitas mining untuk pengujian antarmuka.</p>
+</div>
+<span class="pill">DEMO</span>
+</div>
+
+<div class="card">
+<div class="row">
+<div>
+<small class="muted">Simulated reward</small>
+<div class="big-number" id="mineBalance">0.0000 GAZ</div>
+</div>
+<div style="font-size:35px">⛏️</div>
+</div>
+<div class="progress"><span id="mineProgress" style="width:0%"></span></div>
+<div class="row">
+<small class="muted" id="mineElapsed">Belum ada sesi aktif</small>
+<small class="muted">Rate demo: 0.0100 GAZ/jam</small>
+</div>
+<div class="actions" style="margin-top:16px">
+<button class="btn primary" id="mineBtn" onclick="toggleMining()">Mulai Mining</button>
+<button class="btn secondary" onclick="resetMining()">Reset Demo</button>
+</div>
+</div>
+
+<div class="notice">
+Penting: angka mining ini hanya simulasi tampilan. Tidak menghasilkan, mengirim, atau menjanjikan GAZ sungguhan.
+</div>
+</section>
+
+<!-- COMMUNITY -->
+<section id="community" class="page">
+<div class="section-head">
+<div>
+<div class="eyebrow">GROW TOGETHER</div>
+<h2>Community Hub</h2>
+<p>Bangun jaringan dan temukan peluang ekosistem.</p>
+</div>
+<span class="pill">REFERRAL 3 LEVEL</span>
+</div>
+
+<div class="card">
+<div class="row">
+<div>
+<h3>Program Referral GAZFOOL</h3>
+<p>Undang anggota dan lihat struktur jaringan tiga tingkat.</p>
+</div>
+<div style="font-size:30px">♧</div>
+</div>
+
+<div class="refcode" id="refCode">GAZ-DEMO-2026</div>
+
+<div class="actions" style="margin-top:11px">
+<button class="btn primary" onclick="copyReferral()">Salin kode</button>
+<button class="btn secondary" onclick="shareReferral()">Bagikan undangan</button>
+</div>
+
+<div class="notice">
+Kode dan anggota di bawah ini merupakan data contoh untuk pratinjau. Belum tercatat sebagai jaringan referral sungguhan.
+</div>
+</div>
+
+<div class="section-head">
+<div><h2>Jaringan referral</h2><p>Contoh ringkasan anggota per level</p></div>
+</div>
+
+<div class="levels">
+<div class="level"><small>LEVEL 1</small><b>12</b><small>anggota langsung</small></div>
+<div class="level"><small>LEVEL 2</small><b>38</b><small>anggota tidak langsung</small></div>
+<div class="level"><small>LEVEL 3</small><b>96</b><small>anggota tidak langsung</small></div>
+</div>
+
+<div class="section-head">
+<div><h2>Komisi referral</h2><p>Usulan persentase dari reward yang memenuhi syarat</p></div>
+</div>
+
+<div class="card">
+<div class="member">
+<span>Level 1 · Langsung</span>
+<strong style="color:var(--gold2)">10%</strong>
+</div>
+<div class="member">
+<span>Level 2</span>
+<strong style="color:var(--gold2)">5%</strong>
+</div>
+<div class="member">
+<span>Level 3</span>
+<strong style="color:var(--gold2)">2%</strong>
+</div>
+<div class="row" style="padding-top:13px">
+<span class="muted">Batas dana program usulan</span>
+<strong>30.000 GAZ</strong>
+</div>
+<div class="notice">
+Rancangan presentasi, belum menjadi aturan distribusi token. Tidak ada komisi sungguhan yang dibayarkan dalam demo ini.
+</div>
+</div>
+
+<div class="section-head">
+<div><h2>Aktivitas komunitas</h2><p>Ruang pengembangan dalam ekosistem</p></div>
+</div>
+
+<div class="grid">
+<div class="card"><h3>🎮 Games</h3><p>Ruang untuk permainan dan aktivitas komunitas.</p></div>
+<div class="card"><h3>🏪 UMKM</h3><p>Dukungan promosi dan kolaborasi usaha.</p></div>
+<div class="card"><h3>💻 Digital Services</h3><p>Layanan dan solusi digital bertahap.</p></div>
+<div class="card"><h3>🤝 Partnership</h3><p>Peluang kolaborasi antarkomunitas.</p></div>
+</div>
+</section>
+
+<!-- WALLET -->
+<section id="wallet" class="page">
+<div class="section-head">
+<div>
+<div class="eyebrow">WEB3 CONNECTION</div>
+<h2>Wallet</h2>
+<p>Hubungkan wallet untuk membaca alamat dan jaringan.</p>
+</div>
+</div>
+
+<div class="card">
+<div class="row">
+<div>
+<small class="muted">Status koneksi</small>
+<h3 id="walletStatus">Belum terhubung</h3>
+</div>
+<div style="font-size:34px">◈</div>
+</div>
+
+<div class="field">
+<label>Alamat wallet</label>
+<input id="walletAddress" readonly placeholder="Belum ada alamat wallet">
+</div>
+<div class="field">
+<label>Jaringan terdeteksi</label>
+<input id="walletNetwork" readonly placeholder="Belum terdeteksi">
+</div>
+
+<div class="actions">
+<button class="btn primary" onclick="connectWallet()">Hubungkan MetaMask</button>
+<button class="btn secondary" onclick="disconnectWallet()">Putuskan tampilan</button>
+</div>
+
+<div class="notice">
+Koneksi meminta persetujuan wallet. Demo ini hanya meminta akses alamat dan membaca jaringan; tidak meminta seed phrase/private key dan tidak mengirim transaksi. Jika browser tidak menyediakan MetaMask provider, buka halaman ini dari browser MetaMask.
+</div>
+</div>
+
+<div class="card" style="margin-top:14px">
+<h3>Jaringan GAZFOOL</h3>
+<div class="member"><span>Network</span><strong>Sidra Chain</strong></div>
+<div class="member"><span>Chain ID</span><strong>97453</strong></div>
+<div class="member"><span>Native Koin</span><strong>SDA</strong></div>
+<div class="member">
+<span>GAZ contract</span>
+<strong style="font-size:11px;word-break:break-all">0x41aa098e2Dd12954b969481C45df0cF7EfEC31e8</strong>
+</div>
+</div>
+</section>
+
+<!-- ACCOUNT -->
+<section id="account" class="page">
+<div class="section-head">
+<div>
+<div class="eyebrow">MEMBER ACCESS</div>
+<h2>Account</h2>
+<p>Buat akun atau masuk ke ruang anggota.</p>
+</div>
+</div>
+
+<div class="card" id="authCard">
+<div class="row">
+<h3 id="authTitle">Daftar anggota</h3>
+<span class="pill">PREVIEW</span>
+</div>
+
+<div class="field">
+<label>Nama lengkap</label>
+<input id="fullName" placeholder="Nama kamu">
+</div>
+<div class="field">
+<label>Username</label>
+<input id="username" placeholder="contoh: gazmember">
+</div>
+<div class="field">
+<label>Email</label>
+<input id="email" type="email" placeholder="nama@email.com">
+</div>
+<div class="field">
+<label>Password</label>
+<input id="password" type="password" placeholder="Minimal 6 karakter">
+</div>
+<div class="field" id="refField">
+<label>Kode referral (opsional)</label>
+<input id="signupRef" placeholder="Masukkan kode undangan">
+</div>
+
+<button class="btn primary" style="width:100%" id="authBtn" onclick="authAction()">Buat akun demo</button>
+
+<p style="margin:12px 0 0;text-align:center">
+<small class="muted" id="authSwitchText">Sudah punya akun?</small>
+<a href="#" onclick="toggleAuth();return false" style="color:var(--gold2)">Masuk</a>
+</p>
+
+<div class="notice" id="authNotice">
+Mode pratinjau: formulir dapat dicoba secara lokal. Pendaftaran sungguhan melalui Supabase akan diaktifkan setelah konfigurasi aman dan hosting siap.
+</div>
+</div>
+
+<div class="card hidden" id="memberCard">
+<div class="row">
+<h3>Member profile</h3>
+<span class="pill">DEMO SESSION</span>
+</div>
+<p id="memberWelcome"></p>
+<div class="member"><span>Status akun</span><strong>Preview</strong></div>
+<button class="btn secondary" onclick="logoutDemo()">Keluar</button>
+</div>
+</section>
+
+</main>
+
+<div class="footer">GAZFOOL DIGITAL ECOSYSTEM · PREVIEW BUILD · Not financial advice</div>
+</div>
+
+<!-- NAVIGASI BAWAH -->
+<nav class="nav">
+<button class="active" data-page="home" onclick="go('home')"><span>⌂</span>Home</button>
+<button data-page="mining" onclick="go('mining')"><span>⛏</span>Mining</button>
+<button data-page="community" onclick="go('community')"><span>♧</span>Community</button>
+<button data-page="wallet" onclick="go('wallet')"><span>◈</span>Wallet</button>
+<button data-page="account" onclick="go('account')"><span>◎</span>Account</button>
+</nav>
+
+<div id="toast" class="toast hidden"></div>
+
+<script>
+const $=id=>document.getElementById(id);
+
+function toast(msg){
+$('toast').textContent=msg;
+$('toast').classList.remove('hidden');
+setTimeout(()=>$('toast').classList.add('hidden'),2600)
+}
+
+function go(page){
+document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===page));
+document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===page));
+window.scrollTo({top:0,behavior:'smooth'})
+}
+
+/* SIMULASI MINING */
+let mining=false,mineStart=0,mineTimer=null,mineTotal=0;
+
+function toggleMining(){
+mining=!mining;
+if(mining){
+mineStart=Date.now();
+$('mineBtn').textContent='Hentikan Mining';
+mineTimer=setInterval(updateMine,1000);
+toast('Simulasi mining dimulai')
+}else{
+clearInterval(mineTimer);
+$('mineBtn').textContent='Lanjutkan Mining';
+toast('Sesi simulasi dihentikan')
+}
+updateMine()
+}
+
+function updateMine(){
+let seconds=mining?Math.floor((Date.now()-mineStart)/1000):0;
+let amount=mineTotal+seconds/360000;
+$('mineBalance').textContent=amount.toFixed(6)+' GAZ';
+$('mineElapsed').textContent=mining
+?'Sesi berjalan · '+Math.floor(seconds/60)+' menit '+seconds%60+' detik'
+:'Sesi tidak aktif';
+$('mineProgress').style.width=(seconds%3600/3600*100)+'%'
+}
+
+function resetMining(){
+clearInterval(mineTimer);
+mining=false;
+mineStart=0;
+mineTotal=0;
+$('mineBtn').textContent='Mulai Mining';
+$('mineBalance').textContent='0.000000 GAZ';
+$('mineElapsed').textContent='Belum ada sesi aktif';
+$('mineProgress').style.width='0%';
+toast('Simulasi direset')
+}
+
+/* REFERRAL DEMO */
+function copyReferral(){
+let code=$('refCode').textContent;
+if(navigator.clipboard?.writeText){
+navigator.clipboard.writeText(code)
+.then(()=>toast('Kode referral disalin'))
+.catch(()=>toast('Kode referral: '+code))
+}else{
+toast('Kode referral: '+code)
+}
+}
+
+function shareReferral(){
+let text='Yuk kenali GAZFOOL Digital Ecosystem! Kode undangan demo: '+$('refCode').textContent;
+if(navigator.share){
+navigator.share({title:'GAZFOOL',text})
+}else{
+copyReferral()
+}
+}
+
+/* AKUN DEMO LOKAL */
+function toggleAuth(){
+let login=$('authTitle').textContent==='Masuk anggota';
+$('authTitle').textContent=login?'Daftar anggota':'Masuk anggota';
+$('authBtn').textContent=login?'Buat akun demo':'Masuk demo';
+$('refField').classList.toggle('hidden',!login);
+$('fullName').parentElement.classList.toggle('hidden',!login);
+$('username').parentElement.classList.toggle('hidden',!login);
+$('authSwitchText').textContent=login?'Sudah punya akun?':'Belum punya akun?';
+document.querySelector('#authSwitchText + a').textContent=login?'Masuk':'Daftar';
+$('authBtn').onclick=authAction
+}
+
+function authAction(){
+let email=$('email').value.trim();
+let pass=$('password').value;
+
+if(!email||!pass){
+toast('Isi email dan password terlebih dahulu');
+return
+}
+if(pass.length<6){
+toast('Password minimal 6 karakter');
+return
+}
+
+let isLogin=$('authTitle').textContent==='Masuk anggota';
+let users=JSON.parse(localStorage.getItem('gaz_demo_users')||'{}');
+
+if(isLogin){
+if(!users[email]||users[email].pass!==pass){
+toast('Akun demo tidak ditemukan atau password salah');
+return
+}
+showMember(users[email].name,email)
+}else{
+if(users[email]){
+toast('Email sudah terdaftar di demo ini');
+return
+}
+let name=$('fullName').value.trim()||'Anggota GAZFOOL';
+users[email]={
+pass,
+name,
+username:$('username').value.trim()
+};
+localStorage.setItem('gaz_demo_users',JSON.stringify(users));
+toast('Akun demo tersimpan di perangkat ini');
+showMember(name,email)
+}
+}
+
+function showMember(name,email){
+$('authCard').classList.add('hidden');
+$('memberCard').classList.remove('hidden');
+$('memberWelcome').textContent='Selamat datang, '+name+' ('+email+')'
+}
+
+function logoutDemo(){
+$('memberCard').classList.add('hidden');
+$('authCard').classList.remove('hidden');
+toast('Kamu sudah keluar dari sesi demo')
+}
+
+/* KONEKSI WALLET: HANYA BACA ALAMAT DAN JARINGAN */
+let provider=null;
+
+async function connectWallet(){
+if(!window.ethereum){
+toast('MetaMask provider tidak ditemukan. Buka dari browser MetaMask.');
+return
+}
+try{
+provider=window.ethereum;
+let accounts=await provider.request({method:'eth_requestAccounts'});
+if(!accounts.length)throw Error('Tidak ada akun yang dipilih');
+
+let chain=await provider.request({method:'eth_chainId'});
+$('walletAddress').value=accounts[0];
+$('walletNetwork').value=chain==='0x17cad'
+?'Sidra Chain (97453)'
+:'Chain ID '+parseInt(chain,16);
+$('walletStatus').textContent='Terhubung';
+
+toast(chain==='0x17cad'
+?'Wallet terhubung ke Sidra Chain'
+:'Wallet terhubung; jaringan bukan Sidra Chain');
+
+provider.on?.('accountsChanged',a=>{
+$('walletAddress').value=a[0]||'';
+$('walletStatus').textContent=a.length?'Terhubung':'Belum terhubung'
+});
+
+provider.on?.('chainChanged',c=>{
+$('walletNetwork').value=c==='0x17cad'
+?'Sidra Chain (97453)'
+:'Chain ID '+parseInt(c,16)
+});
+
+}catch(e){
+toast(e.message||'Koneksi wallet dibatalkan')
+}
+}
+
+function disconnectWallet(){
+$('walletAddress').value='';
+$('walletNetwork').value='';
+$('walletStatus').textContent='Belum terhubung';
+toast('Tampilan koneksi direset. Izin wallet dikelola dari MetaMask.')
+}
+</script>
+</body>
+</html>
